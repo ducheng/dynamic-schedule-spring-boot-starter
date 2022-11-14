@@ -1,8 +1,9 @@
 package com.dc.dynamic.schedule.web;
 
+import com.dc.dynamic.schedule.common.ConstantsPool;
+import com.dc.dynamic.schedule.task.DcSchedulingRunnable;
 import com.dc.dynamic.schedule.config.event.DynamicScheduleEvent;
 import com.dc.dynamic.schedule.config.event.DynamicScheduleService;
-import com.dc.dynamic.schedule.task.DcSchedulingRunnable;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -10,8 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.dc.dynamic.schedule.common.ConstantsPool.SCHEDULING_RUNNABLE_MAP;
 
 /**
  *  动态定时任务的视图层
@@ -30,7 +29,7 @@ public class DynamicScheduleController {
      */
     @GetMapping("/getList")
     public List<DcSchedulingRunnableVo> getList() {
-        List<DcSchedulingRunnable> runnableList = SCHEDULING_RUNNABLE_MAP.values().stream().collect(Collectors.toList());
+        List<DcSchedulingRunnable> runnableList = ConstantsPool.SCHEDULING_RUNNABLE_MAP.values().stream().collect(Collectors.toList());
         List<DcSchedulingRunnableVo> runnableVos = new ArrayList<>();
         runnableList.stream().forEach(x-> {
             DcSchedulingRunnableVo runnableVo = new DcSchedulingRunnableVo();
@@ -55,7 +54,7 @@ public class DynamicScheduleController {
      */
     @PostMapping("/startOnce/{taskId}")
     public String updateSchedule(@PathVariable("taskId") String taskId) {
-        DcSchedulingRunnable dcSchedulingRunnable = SCHEDULING_RUNNABLE_MAP.get(taskId);
+        DcSchedulingRunnable dcSchedulingRunnable = ConstantsPool.SCHEDULING_RUNNABLE_MAP.get(taskId);
         Thread thread = new Thread(dcSchedulingRunnable);
         thread.start();
         return "ok";
