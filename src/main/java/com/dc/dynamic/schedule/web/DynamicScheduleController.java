@@ -1,9 +1,9 @@
 package com.dc.dynamic.schedule.web;
 
+
 import com.dc.dynamic.schedule.common.ConstantsPool;
+import com.dc.dynamic.schedule.config.DynamicScheduleService;
 import com.dc.dynamic.schedule.task.DcSchedulingRunnable;
-import com.dc.dynamic.schedule.config.event.DynamicScheduleEvent;
-import com.dc.dynamic.schedule.config.event.DynamicScheduleService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -43,16 +43,34 @@ public class DynamicScheduleController {
      * 动态修改定时任务版本
      */
     @PostMapping("/updateSchedule")
-    public String updateSchedule(@RequestBody DynamicScheduleEvent dynamicScheduleEvent ) {
-        dynamicScheduleService.updateSchedule(dynamicScheduleEvent);
+    public String updateSchedule(@RequestBody DcSchedulingRunnableDto dcSchedulingRunnableDto ) {
+        dynamicScheduleService.updateSchedule(dcSchedulingRunnableDto);
         return "ok";
     }
 
 
     /**
+     * 开启动态定时任务
+     */
+    @GetMapping("/startScheduleTask/{taskId}")
+    public String startScheduleTask(@PathVariable("taskId")String taskId ) {
+        dynamicScheduleService.startScheduleTask(taskId);
+        return "ok";
+    }
+
+    /**
+     * 取消动态定时任务
+     */
+    @GetMapping("/removeCronTask/{taskId}")
+    public String removeCronTask(@PathVariable("taskId")String taskId ) {
+        dynamicScheduleService.removeCronTask(taskId);
+        return "ok";
+    }
+
+    /**
      * 手动执行一次
      */
-    @PostMapping("/startOnce/{taskId}")
+    @GetMapping("/startOnce/{taskId}")
     public String updateSchedule(@PathVariable("taskId") String taskId) {
         DcSchedulingRunnable dcSchedulingRunnable = ConstantsPool.SCHEDULING_RUNNABLE_MAP.get(taskId);
         Thread thread = new Thread(dcSchedulingRunnable);

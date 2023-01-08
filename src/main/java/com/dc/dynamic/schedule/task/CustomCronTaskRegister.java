@@ -4,12 +4,9 @@ package com.dc.dynamic.schedule.task;
 import com.dc.dynamic.schedule.common.ConstantsPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.config.CronTask;
-import org.springframework.util.ObjectUtils;
-
 import javax.annotation.Resource;
 
 
@@ -36,13 +33,16 @@ public class CustomCronTaskRegister implements DisposableBean {
         }
         CronTask cronTask = new CronTask(task, cronExpression);
         ConstantsPool.TASK_CONCURRENT_HASH_MAP.put(taskId, scheduleCronTask(cronTask));
-        DcSchedulingRunnable schedulingRunnable = ConstantsPool.SCHEDULING_RUNNABLE_MAP.get(taskId);
-        if (ObjectUtils.isEmpty(schedulingRunnable)) {
-            ConstantsPool.SCHEDULING_RUNNABLE_MAP.put(taskId,task);
-        }else {
-            BeanUtils.copyProperties(task,schedulingRunnable);
-        }
         logger.info("添加定时任务成功，定时任务的cron表达式:{}, taskId:{}",cronExpression,taskId);
+    }
+
+    /**
+     * 新增初始化添加定时任务的方法
+     * @param task
+     */
+    public void initCronTask(DcSchedulingRunnable task) {
+        ConstantsPool.SCHEDULING_RUNNABLE_MAP.put(task.getTaskId(),task);
+        logger.info("初始化添加定时任务的cron表达式:{}, taskId:{}",task.getCronExpression(),task.getTaskId());
     }
 
     public void removeCronTask(String taskId) {

@@ -1,7 +1,7 @@
 package com.dc.dynamic.schedule.web;
 
 /**
- *  动态定时任务视图view 类
+ *  动态定时任务视图出参类
  */
 public class DcSchedulingRunnableVo {
 
