@@ -70,8 +70,8 @@ public class DynamicScheduleController {
     /**
      * 手动执行一次
      */
-    @GetMapping("/startOnce/{taskId}")
-    public String updateSchedule(@PathVariable("taskId") String taskId) {
+    @GetMapping("/startOne/{taskId}")
+    public String startOneSchedule(@PathVariable("taskId") String taskId) {
         DcSchedulingRunnable dcSchedulingRunnable = ConstantsPool.SCHEDULING_RUNNABLE_MAP.get(taskId);
         Thread thread = new Thread(dcSchedulingRunnable);
         thread.start();
