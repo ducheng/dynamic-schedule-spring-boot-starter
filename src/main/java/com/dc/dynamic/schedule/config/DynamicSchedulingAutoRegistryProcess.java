@@ -6,6 +6,7 @@ import com.dc.dynamic.schedule.task.DcSchedulingRunnable;
 import com.dc.dynamic.schedule.utils.StrUtil;
 import com.sun.org.apache.xerces.internal.xinclude.XPointerSchema;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Bean;
@@ -17,13 +18,12 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.ReflectionUtils;
 import java.lang.reflect.Method;
 
-public class DynamicSchedulingAutoRegistryProcess implements BeanPostProcessor {
+public class DynamicSchedulingAutoRegistryProcess implements BeanPostProcessor, InitializingBean {
 
 
     @Autowired
     private ConfigurablePropertyResolver propertyResolver;
 
-    @Autowired
     private CustomCronTaskRegister customCronTaskRegister;
 
     @Override
@@ -42,7 +42,7 @@ public class DynamicSchedulingAutoRegistryProcess implements BeanPostProcessor {
         }
         return bean;
     }
-    
+
     @Bean("dynamic-schedule-taskScheduler")
     public TaskScheduler taskScheduler() {
         ThreadPoolTaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
@@ -55,7 +55,7 @@ public class DynamicSchedulingAutoRegistryProcess implements BeanPostProcessor {
 
     @Bean
     public CustomCronTaskRegister getCustomCronTaskRegister() {
-        return new CustomCronTaskRegister();
+        return this.customCronTaskRegister;
     }
 
     @Bean
@@ -63,4 +63,8 @@ public class DynamicSchedulingAutoRegistryProcess implements BeanPostProcessor {
         return new DynamicScheduleService();
     }
 
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        customCronTaskRegister = new CustomCronTaskRegister();
+    }
 }
