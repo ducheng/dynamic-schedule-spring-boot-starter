@@ -4,6 +4,7 @@ import com.dc.dynamic.schedule.annotation.DynamicScheduled;
 import com.dc.dynamic.schedule.task.CustomCronTaskRegister;
 import com.dc.dynamic.schedule.task.DcSchedulingRunnable;
 import com.dc.dynamic.schedule.utils.StrUtil;
+import com.sun.org.apache.xerces.internal.xinclude.XPointerSchema;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -26,7 +27,7 @@ public class DynamicSchedulingAutoRegistryProcess implements BeanPostProcessor {
     private CustomCronTaskRegister customCronTaskRegister;
 
     @Override
-    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         Method[] methods = ReflectionUtils.getAllDeclaredMethods(bean.getClass());
         if (methods == null) return bean;
         for (Method method : methods) {
@@ -41,8 +42,7 @@ public class DynamicSchedulingAutoRegistryProcess implements BeanPostProcessor {
         }
         return bean;
     }
-
-
+    
     @Bean("dynamic-schedule-taskScheduler")
     public TaskScheduler taskScheduler() {
         ThreadPoolTaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
