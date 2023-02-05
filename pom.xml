@@ -40,7 +40,7 @@
 
 	<groupId>com.github.ducheng</groupId>
 	<artifactId>dynamic-schedule-spring-boot-starter</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.4</version>
 	<packaging>jar</packaging>
 
 	<name>dynamic-schedule-spring-boot-starter</name>
@@ -147,6 +147,22 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+
+		<!-- gpg -->
+		<profile>
+			<id>maven-public</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<gpg.executable>C:\Program Files\Git\usr\bin\gpg.exe</gpg.executable>
+				<gpg.passphrase>Dkq@1995</gpg.passphrase>
+			</properties>
+		</profile>
+
+	</profiles>
 	
 
 </project>
