@@ -71,7 +71,8 @@ public class DcSchedulingRunnable implements Runnable {
             logger.info("定时任务开始执行 类名称:{}, 方法:{}, taskId:{}",beanName, method.getName(),getTaskId());
             method.invoke(bean);
         } catch (Exception e) {
-            logger.error("定时任务访问报错: {} ", e.getMessage());
+            e.printStackTrace();
+            logger.error("定时任务执行报错: {} ", e.getMessage());
         }
     }
     public String getTaskId() {
