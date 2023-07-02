@@ -4,12 +4,12 @@ import com.dc.dynamic.schedule.annotation.DynamicScheduled;
 import com.dc.dynamic.schedule.task.CustomCronTaskRegister;
 import com.dc.dynamic.schedule.task.DcSchedulingRunnable;
 import com.dc.dynamic.schedule.utils.StrUtil;
-import com.sun.org.apache.xerces.internal.xinclude.XPointerSchema;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.env.ConfigurablePropertyResolver;
 import org.springframework.scheduling.TaskScheduler;
@@ -18,6 +18,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.ReflectionUtils;
 import java.lang.reflect.Method;
 
+@Configuration
 public class DynamicSchedulingAutoRegistryProcess implements BeanPostProcessor, InitializingBean {
 
 

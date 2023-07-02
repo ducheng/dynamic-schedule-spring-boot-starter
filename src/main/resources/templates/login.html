@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+</head>
+<body>
+<div class="ui container">
+    <table class="ui celled attached table" style="margin-top: 40px !important;">
+        <thead>
+        <tr><th>任务id</th>
+            <th>定时任务表达式</th>
+            <th>描述</th>
+            <th>状态</th>
+        </tr></thead>
+        <tbody>
+        <tr th:each="job : ${list}">
+            <td th:text="${job.taskId}"></td>
+            <td th:text="${job.cronExpression}"></td>
+            <td th:text="${job.desc}"></td>
+            <td th:text="${job.status}"></td>
+            <td>
+                <a th:href="@{/dynamicSchedule/edit/{taskId}(taskId=${job.taskId})}" class="ui button mini pink">编辑</a>
+                <a th:href="@{/dynamicSchedule/startScheduleTask/{taskId}(taskId=${job.taskId})}" class="ui button mini teal">开启动态定时任务</a>
+                <a th:href="@{/dynamicSchedule/removeCronTask/{taskId}(taskId=${job.taskId})}" class="ui button mini teal">关闭动态定时任务</a>
+                <a th:href="@{/dynamicSchedule/startOne/{taskId}(taskId=${job.taskId})}" class="ui button mini teal">手动执行一次</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="ui success  message" th:unless="${#strings.isEmpty(message)}">
+        <i class="close icon"></i>
+        <div class="header">提示：</div>
+        <p th:text="${message}"></p>
+    </div>
+</div>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+<script>
+    $(".message .close").on('click',function () {
+        $(this).closest(".message")
+            .transition("fade");
+    })
+</script>
+</body>
+</html>
