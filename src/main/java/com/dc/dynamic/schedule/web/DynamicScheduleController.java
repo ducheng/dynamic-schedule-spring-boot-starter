@@ -31,15 +31,15 @@ public class DynamicScheduleController {
      * @return
      */
     @GetMapping("/index")
-    public String  index(Model model) {
+    public String  getAll(Model model) {
         List<DcSchedulingRunnable> runnableList = ConstantsPool.SCHEDULING_RUNNABLE_MAP.values().stream().collect(Collectors.toList());
-        List<DcSchedulingRunnableVo> runnableVos = new ArrayList<>();
+        List<DcSchedulingRunnableVo> jobs = new ArrayList<>();
         runnableList.stream().forEach(x-> {
             DcSchedulingRunnableVo runnableVo = new DcSchedulingRunnableVo();
             BeanUtils.copyProperties(x,runnableVo);
-            runnableVos.add(runnableVo);
+            jobs.add(runnableVo);
         });
-        model.addAttribute("list", runnableList);
+        model.addAttribute("jobs",jobs);
         return "index";
     }
 
@@ -47,9 +47,8 @@ public class DynamicScheduleController {
      * 动态修改定时任务版本
      */
     @PostMapping("/updateSchedule")
-    public String updateSchedule(DcSchedulingRunnableDto dcSchedulingRunnableDto,RedirectAttributes attributes ) {
+    public String updateSchedule(DcSchedulingRunnableDto dcSchedulingRunnableDto) {
         dynamicScheduleService.updateSchedule(dcSchedulingRunnableDto);
-        attributes.addFlashAttribute("message", "修改动态定时任务成功");
         return "redirect:/dynamicSchedule/index";
     }
 
@@ -59,6 +58,7 @@ public class DynamicScheduleController {
     public String toEdit(@PathVariable("taskId")String taskId, Model model) {
         List<DcSchedulingRunnable> runnableList = ConstantsPool.SCHEDULING_RUNNABLE_MAP.values().stream().collect(Collectors.toList());
         DcSchedulingRunnable dcSchedulingRunnable = runnableList.stream().filter(x -> x.getTaskId().equals(taskId)).findFirst().get();
+        dcSchedulingRunnable.setTaskId(taskId);
         model.addAttribute("job", dcSchedulingRunnable);
         return "editJob";
     }
