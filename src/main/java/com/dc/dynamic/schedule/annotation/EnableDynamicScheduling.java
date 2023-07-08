@@ -1,6 +1,7 @@
 package com.dc.dynamic.schedule.annotation;
 
 import com.dc.dynamic.schedule.config.DynamicSchedulingAutoRegistryProcess;
+import com.dc.dynamic.schedule.web.DynamicScheduleControllerRegister;
 import org.springframework.context.annotation.Import;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -12,6 +13,6 @@ import java.lang.annotation.Target;
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-@Import({DynamicSchedulingAutoRegistryProcess.class})
+@Import({DynamicSchedulingAutoRegistryProcess.class, DynamicScheduleControllerRegister.class})
 public @interface EnableDynamicScheduling {
 }
